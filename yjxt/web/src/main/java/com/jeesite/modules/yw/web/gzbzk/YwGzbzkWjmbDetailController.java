@@ -89,7 +89,7 @@ public class YwGzbzkWjmbDetailController extends BaseController {
 	@ResponseBody
 	public String save(@Validated YwGzbzkWjmbDetail ywGzbzkWjmbDetail) {
 		if(StringUtils.isBlank(ywGzbzkWjmbDetail.getPid())){
-			return renderResult(Global.FALSE, text("请选择对应的节点进行操作！未获取对应的节点信息"));
+			return renderResult(Global.FALSE, text("请选择对应的节点进行操作！未获取到对应的节点信息"));
 		}
 		ywGzbzkWjmbDetailService.save(ywGzbzkWjmbDetail);
 		return renderResult(Global.TRUE, text("保存成功！"));

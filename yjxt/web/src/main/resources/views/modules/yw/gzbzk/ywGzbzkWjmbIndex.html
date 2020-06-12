@@ -1,4 +1,6 @@
 <% layout('/layouts/default.html', {title: '章节信息', libs: ['layout','zTree']}){ %>
+
+<input style="display: none;" id="mbId" value="${mbId}"/>
 <div class="ui-layout-west">
 	<div class="main-content">
 		<div class="box box-main">
@@ -35,25 +37,19 @@ var win = $("#mainFrame")[0].contentWindow;
 var setting = {
 	view:{selectedMulti:false,addHoverDom: addHoverDom, removeHoverDom: removeHoverDom},
 	data:{key:{title:"title"},simpleData:{enable:true}},
-	callback:{onClick:function(event, treeId, treeNode){
-		/*tree.expandNode(treeNode);
-		//win.$('button[type=reset]').click();
-		win.$('#test').val(treeNode.id);
-		reloadFrame(treeNode.id);*/
-	}}
+	callback:{
+		onClick:function(event, treeId, treeNode){
+		}
+	}
 }, tree, loadTree = function(){
-	js.ajaxSubmit("${ctx}/yw/gzbzk/ywGzbzkWjmbInfo/treeData?id=1270963823389704192" , function(data){
+	js.ajaxSubmit("${ctx}/yw/gzbzk/ywGzbzkWjmbInfo/treeData?id="+$('#mbId').val() , function(data){
 		tree = $.fn.zTree.init($("#tree"), setting, data);//.expandAll(true);
 		// 展开第一级节点
 		var nodes = tree.getNodesByParam("level", 0);
 		for(var i=0; i<nodes.length; i++) {
 			tree.expandNode(nodes[i], true, false, false);
 		}
-		// 展开第二级节点
-// 		nodes = tree.getNodesByParam("level", 1);
-// 		for(var i=0; i<nodes.length; i++) {
-// 			tree.expandNode(nodes[i], true, false, false);
-// 		}
+
 	}, null, null, js.text('loading.message'));
 };loadTree();
 // 工具栏按钮绑定
@@ -72,20 +68,25 @@ $('#btnRefresh').click(function(){
 });
 
 
+
+//绑定ztree的自定义图标
+//如果是顶级的话，则只有修改和新增的功能
 function addHoverDom(treeId, treeNode) {
-	if (treeNode.level === 0) {
-		return false;
-	} else {
+
 		var sObj = $("#" + treeNode.tId + "_a"); //获取节点信息
 		if (treeNode.editNameFlag || $("#addBtn_" + treeNode.tId).length > 0) return;
 
 		var addStr = "<span class='button add' id='addBtn_" + treeNode.tId + "' title='add node' onfocus='this.blur();'></span>"; //定义添加按钮
-		var deleteStr = "<span class='button remove' id='deleteBtn_" + treeNode.tId + "' title='del node' onfocus='this.blur();'></span>"; //定义删除按钮
 		var updateStr = "<span class='button edit' id='updateBtn_" + treeNode.tId + "' title='update node' onfocus='this.blur();'></span>"; //定义修改按钮
-
 		sObj.after(addStr); //加载添加按钮
-		sObj.after(deleteStr); //加载添加按钮
+		//加载添加按钮
 		sObj.after(updateStr); //加载添加按钮
+		if(treeNode.level != 0){
+			var deleteStr = "<span class='button remove' id='deleteBtn_" + treeNode.tId + "' title='del node' onfocus='this.blur();'>"; //定义删除按钮
+			//var deleteStr = "<a id='deleteA_" + treeNode.tId + "' class='btnList' href='${ctx}/yw/gzbzk/ywGzbzkWjmbInfo/delete?id="+treeNode.id+"' data-confirm='${text('确认要删除该规章标准库-文件模板吗？')}' onfocus='this.blur();'><i class='fa fa-trash-o'></i></a>";
+			deleteStr += '</span>';
+			sObj.after(deleteStr);
+		}
 		var addbtn = $("#addBtn_" + treeNode.tId);
 		var deletebtn = $("#deleteBtn_" + treeNode.tId);
 		var updatebtn = $("#updateBtn_" + treeNode.tId);
@@ -94,23 +95,28 @@ function addHoverDom(treeId, treeNode) {
 		//新增节点信息，请求后台路径。
 		if (addbtn) addbtn.bind("click", function () {
 			var id = treeNode.id;
-
-			window.mainFrame.location.href = "${ctx}/yw/gzbzk/ywGzbzkWjmbDetail/form?pid="+id;
+			var wjmbId = treeNode.wjmbId;
+			window.mainFrame.location.href = "${ctx}/yw/gzbzk/ywGzbzkWjmbDetail/form?pid="+id+"&wjmbId="+wjmbId;
 		});
 
 		if (deletebtn) deletebtn.bind("click", function () {
-			alert("开始删除吧");
+			var id = treeNode.id;
+			js.ajaxSubmit("${ctx}/yw/gzbzk/ywGzbzkWjmbDetail/delete?id="+id , function(data){
+					if(data.result == Global.TRUE){
+						js.showMessage(data.message);
+						loadTree();
+					}else{
+						js.showMessage(data.message);
+					}
+				}, "json");
 		});
+
 
 		if (updatebtn) updatebtn.bind("click", function () {
 			var id = treeNode.id;
-			reloadFrame(id);
-
-
+			var wjmbId = treeNode.wjmbId;
+			window.mainFrame.location.href = "${ctx}/yw/gzbzk/ywGzbzkWjmbDetail/form?id="+id+"&wjmbId="+wjmbId;
 		});
-
-	}
-
 
 };
 
@@ -121,7 +127,5 @@ function removeHoverDom(treeId, treeNode) {
 	$("#updateBtn_"+treeNode.tId).unbind().remove();
 };
 
-function reloadFrame(id){
-	window.mainFrame.location.href = "${ctx}/yw/gzbzk/ywGzbzkWjmbDetail/form?id="+id;
-}
+
 </script>

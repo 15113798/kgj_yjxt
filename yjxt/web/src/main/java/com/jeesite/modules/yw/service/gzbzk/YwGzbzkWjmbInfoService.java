@@ -5,6 +5,7 @@ package com.jeesite.modules.yw.service.gzbzk;
 
 import java.util.List;
 
+import com.jeesite.common.idgen.IdGenerate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -50,6 +51,9 @@ public class YwGzbzkWjmbInfoService extends CrudService<YwGzbzkWjmbInfoDao, YwGz
 	@Override
 	@Transactional(readOnly=false)
 	public void save(YwGzbzkWjmbInfo ywGzbzkWjmbInfo) {
+		if (ywGzbzkWjmbInfo.getIsNewRecord()){
+			ywGzbzkWjmbInfo.setId(IdGenerate.uuid());
+		}
 		super.save(ywGzbzkWjmbInfo);
 	}
 	

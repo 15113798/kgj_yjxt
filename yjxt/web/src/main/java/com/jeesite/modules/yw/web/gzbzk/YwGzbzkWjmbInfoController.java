@@ -94,6 +94,13 @@ public class YwGzbzkWjmbInfoController extends BaseController {
 	@ResponseBody
 	public String save(@Validated YwGzbzkWjmbInfo ywGzbzkWjmbInfo) {
 		ywGzbzkWjmbInfoService.save(ywGzbzkWjmbInfo);
+		//在往主表插了一条记录之后，往子表章节表也插一条记录作为顶级元素
+		YwGzbzkWjmbDetail detail = new YwGzbzkWjmbDetail();
+		detail.setPid("0");
+		detail.setWjmbId(ywGzbzkWjmbInfo.getId());
+		detail.setJdName(ywGzbzkWjmbInfo.getName());
+		ywGzbzkWjmbDetailService.save(detail);
+
 		return renderResult(Global.TRUE, text("保存规章标准库-文件模板成功！"));
 	}
 	
@@ -115,13 +122,14 @@ public class YwGzbzkWjmbInfoController extends BaseController {
 	 */
 	@RequestMapping(value = "index")
 	public String index(YwGzbzkWjmbInfo ywGzbzkWjmbInfo, Model model) {
+		model.addAttribute("mbId", ywGzbzkWjmbInfo.getId()+"");
 		return "modules/yw/gzbzk/ywGzbzkWjmbIndex";
 	}
 
 
 	/*
 		提供章节的tree结构
-		入参 规章标准库的主键id
+		入参 文件模板的主键id
 	 */
 	@RequestMapping(value = "treeData")
 	@ResponseBody
@@ -129,18 +137,10 @@ public class YwGzbzkWjmbInfoController extends BaseController {
 		List<Map<String, Object>> mapList = ListUtils.newArrayList();
 		List<YwGzbzkWjmbDetail> list = null;
 		if (StringUtils.isNotBlank(id)){
-			// 获取到规章标准库主表的id,通过id去规章目录表中获取到对应的一条记录。
+			// 获取到文件模板主表的id,通过id去文件模板表中获取到对应的一条记录。
 			YwGzbzkWjmbDetail detail = new  YwGzbzkWjmbDetail();
 			detail.setWjmbId(id);
 			list = ywGzbzkWjmbDetailService.findList(detail);
-/*			YwGzbzkWjmbDetail detailEntity = pidList.get(0);
-			String pid = detailEntity.getId();
-
-			//拿到第一个的id作为pid去查询子节点
-			YwGzbzkWjmbDetail findByPid = new  YwGzbzkWjmbDetail();
-			findByPid.setPid(pid);
-			list = ywGzbzkWjmbDetailService.findList(findByPid);*/
-
 		}
 		for (int i=0; i<list.size(); i++){
 			YwGzbzkWjmbDetail e = list.get(i);
@@ -149,6 +149,7 @@ public class YwGzbzkWjmbInfoController extends BaseController {
 			map.put("pId", e.getPid());
 			map.put("name", StringUtils.getTreeNodeName(null, e.getId(), e.getJdName()));
 			map.put("title", e.getJdName());
+			map.put("wjmbId",e.getWjmbId());
 			mapList.add(map);
 		}
 		return mapList;

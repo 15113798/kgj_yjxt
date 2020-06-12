@@ -48,9 +48,9 @@
 					<div class="col-xs-6">
 						<div class="form-group">
 							<label class="control-label col-sm-4" title="">
-								<span class="required hide">*</span> ${text('节点类型')}：<i class="fa icon-question hide"></i></label>
+								<span class="required">*</span> ${text('节点类型')}：<i class="fa icon-question hide"></i></label>
 							<div class="col-sm-8">
-								<#form:select path="jdType" dictType="jd_type" blankOption="true" class="form-control" />
+								<#form:select path="jdType" dictType="jd_type" blankOption="true" class="form-control required" />
 							</div>
 						</div>
 					</div>
@@ -59,18 +59,18 @@
 					<div class="col-xs-6">
 						<div class="form-group">
 							<label class="control-label col-sm-4" title="">
-								<span class="required hide">*</span> ${text('字体')}：<i class="fa icon-question hide"></i></label>
+								<span class="required">*</span> ${text('字体')}：<i class="fa icon-question hide"></i></label>
 							<div class="col-sm-8">
-								<#form:select path="typeface" dictType="ziti" blankOption="true" class="form-control" />
+								<#form:select path="typeface" dictType="ziti" blankOption="true" class="form-control required" />
 							</div>
 						</div>
 					</div>
 					<div class="col-xs-6">
 						<div class="form-group">
 							<label class="control-label col-sm-4" title="">
-								<span class="required hide">*</span> ${text('字号')}：<i class="fa icon-question hide"></i></label>
+								<span class="required">*</span> ${text('字号')}：<i class="fa icon-question hide"></i></label>
 							<div class="col-sm-8">
-								<#form:select path="fontsize" dictType="zihao" blankOption="true" class="form-control" />
+								<#form:select path="fontsize" dictType="zihao" blankOption="true" class="form-control required" />
 							</div>
 						</div>
 					</div>
@@ -79,9 +79,9 @@
 					<div class="col-xs-6">
 						<div class="form-group">
 							<label class="control-label col-sm-4" title="">
-								<span class="required hide">*</span> ${text('是否加粗')}：<i class="fa icon-question hide"></i></label>
+								<span class="required">*</span> ${text('是否加粗')}：<i class="fa icon-question hide"></i></label>
 							<div class="col-sm-8">
-								<#form:select path="isBold" dictType="is_yes" blankOption="true" class="form-control digits" />
+								<#form:select path="isBold" dictType="is_yes" blankOption="true" class="form-control required" />
 							</div>
 						</div>
 					</div>
@@ -125,13 +125,16 @@
 $("#inputForm").validate({
 	submitHandler: function(form){
 		js.ajaxSubmitForm($(form), function(data){
-			fomrReset()
-			js.showMessage(data.message);
-			/*if(data.result == Global.TRUE){
-				js.closeCurrentTabPage(function(contentWindow){
+			if(data.result == Global.TRUE){
+				/*js.closeCurrentTabPage(function(contentWindow){
 					contentWindow.page();
-				});
-			}*/
+				});*/
+				js.showMessage(data.message);
+				fomrReset();
+				window.parent.location.reload();
+			}else{
+				js.showMessage(data.message);
+			}
 		}, "json");
     }
 });

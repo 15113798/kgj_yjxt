@@ -41,8 +41,8 @@ $('#dataGrid').dataGrid({
 			return '<a href="${ctx}/yw/gzbzk/ywGzbzkWjmbInfo/form?id='+row.id+'" class="btnList" data-title="${text("编辑规章标准库-文件模板")}">'+(val||row.id)+'</a>';
 		}},
 		{header:'${text("创建人")}', name:'createBy', index:'a.create_by', width:150, align:"left"},
-		{header:'${text("修改人")}', name:'updateBy', index:'a.update_by', width:150, align:"left"},
 		{header:'${text("创建时间")}', name:'createDate', index:'a.create_date', width:150, align:"center"},
+		{header:'${text("修改人")}', name:'updateBy', index:'a.update_by', width:150, align:"left"},
 		{header:'${text("修改时间")}', name:'updateDate', index:'a.update_date', width:150, align:"center"},
 		{header:'${text("操作")}', name:'actions', width:120, sortable:false, title:false, formatter: function(val, obj, row, act){
 			var actions = [];

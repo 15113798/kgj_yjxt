@@ -5,6 +5,7 @@ package com.jeesite.modules.yw.service.gzbzk;
 
 import java.util.List;
 
+import com.jeesite.common.idgen.IdGenerate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -50,6 +51,9 @@ public class YwGzbzkWjmbDetailService extends CrudService<YwGzbzkWjmbDetailDao, 
 	@Override
 	@Transactional(readOnly=false)
 	public void save(YwGzbzkWjmbDetail ywGzbzkWjmbDetail) {
+		if (ywGzbzkWjmbDetail.getIsNewRecord()){
+			ywGzbzkWjmbDetail.setId(IdGenerate.uuid());
+		}
 		super.save(ywGzbzkWjmbDetail);
 	}
 	
@@ -72,5 +76,11 @@ public class YwGzbzkWjmbDetailService extends CrudService<YwGzbzkWjmbDetailDao, 
 	public void delete(YwGzbzkWjmbDetail ywGzbzkWjmbDetail) {
 		super.delete(ywGzbzkWjmbDetail);
 	}
+
+
+
+
+
+
 	
 }
