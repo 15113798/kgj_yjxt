@@ -70,7 +70,7 @@ $('#btnRefresh').click(function(){
 
 
 //绑定ztree的自定义图标
-//如果是顶级的话，则只有修改和新增的功能
+//只有根节点才有删除图标
 function addHoverDom(treeId, treeNode) {
 
 		var sObj = $("#" + treeNode.tId + "_a"); //获取节点信息
@@ -81,12 +81,17 @@ function addHoverDom(treeId, treeNode) {
 		sObj.after(addStr); //加载添加按钮
 		//加载添加按钮
 		sObj.after(updateStr); //加载添加按钮
-		if(treeNode.level != 0){
+
+
+		if(treeNode.isParent){
+
+		}else{
 			var deleteStr = "<span class='button remove' id='deleteBtn_" + treeNode.tId + "' title='del node' onfocus='this.blur();'>"; //定义删除按钮
 			//var deleteStr = "<a id='deleteA_" + treeNode.tId + "' class='btnList' href='${ctx}/yw/gzbzk/ywGzbzkWjmbInfo/delete?id="+treeNode.id+"' data-confirm='${text('确认要删除该规章标准库-文件模板吗？')}' onfocus='this.blur();'><i class='fa fa-trash-o'></i></a>";
 			deleteStr += '</span>';
 			sObj.after(deleteStr);
 		}
+
 		var addbtn = $("#addBtn_" + treeNode.tId);
 		var deletebtn = $("#deleteBtn_" + treeNode.tId);
 		var updatebtn = $("#updateBtn_" + treeNode.tId);
@@ -100,8 +105,9 @@ function addHoverDom(treeId, treeNode) {
 		});
 
 		if (deletebtn) deletebtn.bind("click", function () {
-			var id = treeNode.id;
-			js.ajaxSubmit("${ctx}/yw/gzbzk/ywGzbzkWjmbDetail/delete?id="+id , function(data){
+			layer.confirm('您确定要删除该节点吗?',{btn: ['确定', '取消'],title:"提示"}, function(){
+				var id = treeNode.id;
+				js.ajaxSubmit("${ctx}/yw/gzbzk/ywGzbzkWjmbDetail/delete?id="+id , function(data){
 					if(data.result == Global.TRUE){
 						js.showMessage(data.message);
 						loadTree();
@@ -109,6 +115,7 @@ function addHoverDom(treeId, treeNode) {
 						js.showMessage(data.message);
 					}
 				}, "json");
+			});
 		});
 
 
