@@ -6,6 +6,7 @@ package com.jeesite.modules.yw.web.gzbzk;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.jeesite.common.lang.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -87,8 +88,11 @@ public class YwGzbzkWjmbDetailController extends BaseController {
 	@PostMapping(value = "save")
 	@ResponseBody
 	public String save(@Validated YwGzbzkWjmbDetail ywGzbzkWjmbDetail) {
+		if(StringUtils.isBlank(ywGzbzkWjmbDetail.getPid())){
+			return renderResult(Global.FALSE, text("请选择对应的节点进行操作！未获取对应的节点信息"));
+		}
 		ywGzbzkWjmbDetailService.save(ywGzbzkWjmbDetail);
-		return renderResult(Global.TRUE, text("保存规章标准库-文件模板节点明细成功！"));
+		return renderResult(Global.TRUE, text("保存成功！"));
 	}
 	
 	/**

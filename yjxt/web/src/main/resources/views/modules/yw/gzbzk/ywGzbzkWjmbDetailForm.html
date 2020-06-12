@@ -16,19 +16,19 @@
 				<div class="form-unit">${text('节点信息')}</div>
 				<#form:hidden path="id"/>
 				<div class="row">
-					<div class="col-xs-6">
+					<div class="col-xs-6" style="display: none;">
 						<div class="form-group">
 							<label class="control-label col-sm-4" title="">
-								<span class="required hide">*</span> ${text('文件模板id')}：<i class="fa icon-question hide"></i></label>
+								<span class="required">*</span> ${text('文件模板id')}：<i class="fa icon-question hide"></i></label>
 							<div class="col-sm-8">
 								<#form:input path="wjmbId" maxlength="64" class="form-control"/>
 							</div>
 						</div>
 					</div>
-					<div class="col-xs-6">
+					<div class="col-xs-6" style="display: none;">
 						<div class="form-group">
 							<label class="control-label col-sm-4" title="">
-								<span class="required hide">*</span> ${text('父级id，如果是第一级。则为0')}：<i class="fa icon-question hide"></i></label>
+								<span class="required">*</span> ${text('父级id，如果是第一级。则为0')}：<i class="fa icon-question hide"></i></label>
 							<div class="col-sm-8">
 								<#form:input path="pid" maxlength="64" class="form-control"/>
 							</div>
@@ -110,14 +110,14 @@
 			<div class="box-footer">
 				<div class="row">
 					<div class="col-sm-offset-2 col-sm-10">
-						<% if (hasPermi('yw:gzbzk:ywGzbzkWjmbDetail:edit')){ %>
-							<button type="submit" class="btn btn-sm btn-primary" id="btnSubmit"><i class="fa fa-check"></i> ${text('保 存')}</button>&nbsp;
-						<% } %>
+						<button type="submit" class="btn btn-sm btn-primary" id="btnSubmit"><i class="fa fa-check"></i> ${text('保 存')}</button>&nbsp;
 						<button type="button" class="btn btn-sm btn-default" id="btnCancel" onclick="js.closeCurrentTabPage()"><i class="fa fa-reply-all"></i> ${text('关 闭')}</button>
 					</div>
 				</div>
 			</div>
-		</#form:form>
+			<button type="reset" style="display:none;"></button>
+
+	</#form:form>
 	</div>
 </div>
 <% } %>
@@ -125,19 +125,40 @@
 $("#inputForm").validate({
 	submitHandler: function(form){
 		js.ajaxSubmitForm($(form), function(data){
+			fomrReset()
 			js.showMessage(data.message);
-			if(data.result == Global.TRUE){
+			/*if(data.result == Global.TRUE){
 				js.closeCurrentTabPage(function(contentWindow){
 					contentWindow.page();
 				});
-			}
+			}*/
 		}, "json");
     }
 });
 
 
-function reload(){
-	alert("开始重新加载界面了");
+
+function fomrReset()
+{
+	$(":input","#inputForm")
+			.not(":button",":reset","hidden","submit")
+			.val("")
+			.removeAttr("checked")
+			.removeAttr("selected");
+
+	//手动清除select2的选中状态
+	$("#jdType option:first").prop("selected",'selected');
+	$('#jdType').trigger('change.select2');
+
+	$("#typeface option:first").prop("selected",'selected');
+	$('#typeface').trigger('change.select2');
+
+	$("#fontsize option:first").prop("selected",'selected');
+	$('#fontsize').trigger('change.select2');
+
+	$("#isBold option:first").prop("selected",'selected');
+	$('#isBold').trigger('change.select2');
 }
+
 
 </script>

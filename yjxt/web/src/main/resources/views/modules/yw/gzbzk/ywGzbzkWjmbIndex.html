@@ -80,8 +80,8 @@ function addHoverDom(treeId, treeNode) {
 		if (treeNode.editNameFlag || $("#addBtn_" + treeNode.tId).length > 0) return;
 
 		var addStr = "<span class='button add' id='addBtn_" + treeNode.tId + "' title='add node' onfocus='this.blur();'></span>"; //定义添加按钮
-		var deleteStr = "<span class='button remove' id='deleteBtn_" + treeNode.tId + "' title='add node' onfocus='this.blur();'></span>"; //定义删除按钮
-		var updateStr = "<span class='button edit' id='updateBtn_" + treeNode.tId + "' title='add node' onfocus='this.blur();'></span>"; //定义修改按钮
+		var deleteStr = "<span class='button remove' id='deleteBtn_" + treeNode.tId + "' title='del node' onfocus='this.blur();'></span>"; //定义删除按钮
+		var updateStr = "<span class='button edit' id='updateBtn_" + treeNode.tId + "' title='update node' onfocus='this.blur();'></span>"; //定义修改按钮
 
 		sObj.after(addStr); //加载添加按钮
 		sObj.after(deleteStr); //加载添加按钮
@@ -90,8 +90,12 @@ function addHoverDom(treeId, treeNode) {
 		var deletebtn = $("#deleteBtn_" + treeNode.tId);
 		var updatebtn = $("#updateBtn_" + treeNode.tId);
 
+
+		//新增节点信息，请求后台路径。
 		if (addbtn) addbtn.bind("click", function () {
-			alert("开始新增吧");
+			var id = treeNode.id;
+
+			window.mainFrame.location.href = "${ctx}/yw/gzbzk/ywGzbzkWjmbDetail/form?pid="+id;
 		});
 
 		if (deletebtn) deletebtn.bind("click", function () {
@@ -99,7 +103,10 @@ function addHoverDom(treeId, treeNode) {
 		});
 
 		if (updatebtn) updatebtn.bind("click", function () {
-			alert("开始修改吧");
+			var id = treeNode.id;
+			reloadFrame(id);
+
+
 		});
 
 	}
