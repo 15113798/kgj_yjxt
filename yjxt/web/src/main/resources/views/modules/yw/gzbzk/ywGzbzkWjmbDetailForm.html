@@ -34,6 +34,28 @@
 							</div>
 						</div>
 					</div>
+
+				</div>
+				<div class="row">
+					<div class="col-xs-6" style="display: none;">
+						<div class="form-group">
+							<label class="control-label col-sm-4" title="">
+								<span class="required">*</span> ${text('层级')}：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-8">
+								<#form:input path="hierarchy" maxlength="64" class="form-control"/>
+							</div>
+						</div>
+					</div>
+					<div class="col-xs-6" style="display: none;">
+						<div class="form-group">
+							<label class="control-label col-sm-4" title="">
+								<span class="required">*</span> ${text('具体编号')}：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-8">
+								<#form:input path="numberCode" maxlength="64" class="form-control"/>
+							</div>
+						</div>
+					</div>
+
 				</div>
 				<div class="row">
 					<div class="col-xs-6">
@@ -48,14 +70,24 @@
 					<div class="col-xs-6">
 						<div class="form-group">
 							<label class="control-label col-sm-4" title="">
+								<span class="required ">*</span> ${text('序号')}：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-8">
+								<#form:input path="number" maxlength="50" class="form-control required"/>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-6">
+						<div class="form-group">
+							<label class="control-label col-sm-4" title="">
 								<span class="required">*</span> ${text('节点类型')}：<i class="fa icon-question hide"></i></label>
 							<div class="col-sm-8">
 								<#form:select path="jdType" dictType="jd_type" blankOption="true" class="form-control required" />
 							</div>
 						</div>
 					</div>
-				</div>
-				<div class="row">
+
 					<div class="col-xs-6">
 						<div class="form-group">
 							<label class="control-label col-sm-4" title="">
@@ -65,16 +97,8 @@
 							</div>
 						</div>
 					</div>
-					<div class="col-xs-6">
-						<div class="form-group">
-							<label class="control-label col-sm-4" title="">
-								<span class="required">*</span> ${text('字号')}：<i class="fa icon-question hide"></i></label>
-							<div class="col-sm-8">
-								<#form:select path="fontsize" dictType="zihao" blankOption="true" class="form-control required" />
-							</div>
-						</div>
-					</div>
 				</div>
+
 				<div class="row">
 					<div class="col-xs-6">
 						<div class="form-group">
@@ -88,13 +112,25 @@
 					<div class="col-xs-6">
 						<div class="form-group">
 							<label class="control-label col-sm-4" title="">
+								<span class="required">*</span> ${text('字号')}：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-8">
+								<#form:select path="fontsize" dictType="zihao" blankOption="true" class="form-control required" />
+							</div>
+						</div>
+					</div>
+				</div>
+				<!--<div class="row">
+					<div class="col-xs-6">
+						<div class="form-group">
+							<label class="control-label col-sm-4" title="">
 								<span class="required hide">*</span> ${text('图片路径')}：<i class="fa icon-question hide"></i></label>
 							<div class="col-sm-8">
 								<#form:input path="urlImg" maxlength="50" class="form-control"/>
 							</div>
 						</div>
 					</div>
-				</div>
+				</div>-->
+
 				<div class="row">
 					<div class="col-xs-12">
 						<div class="form-group">
@@ -105,6 +141,7 @@
 							</div>
 						</div>
 					</div>
+
 				</div>
 			</div>
 			<div class="box-footer">

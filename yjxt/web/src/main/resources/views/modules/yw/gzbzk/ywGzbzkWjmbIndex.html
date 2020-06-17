@@ -29,7 +29,7 @@
 // 初始化布局
 $('body').layout({
 	west__initClosed: $(window).width() <= 767, // 是否默认关闭
-	west__size: 300
+	west__size: 400
 });
 // 主页框架
 var win = $("#mainFrame")[0].contentWindow;
@@ -101,7 +101,7 @@ function addHoverDom(treeId, treeNode) {
 		if (addbtn) addbtn.bind("click", function () {
 			var id = treeNode.id;
 			var wjmbId = treeNode.wjmbId;
-			window.mainFrame.location.href = "${ctx}/yw/gzbzk/ywGzbzkWjmbDetail/form?pid="+id+"&wjmbId="+wjmbId;
+			window.mainFrame.location.href = "${ctx}/yw/gzbzk/ywGzbzkWjmbDetail/form?pid="+id+"&wjmbId="+wjmbId+"&hierarchy="+treeNode.level;
 		});
 
 		if (deletebtn) deletebtn.bind("click", function () {
@@ -122,7 +122,7 @@ function addHoverDom(treeId, treeNode) {
 		if (updatebtn) updatebtn.bind("click", function () {
 			var id = treeNode.id;
 			var wjmbId = treeNode.wjmbId;
-			window.mainFrame.location.href = "${ctx}/yw/gzbzk/ywGzbzkWjmbDetail/form?id="+id+"&wjmbId="+wjmbId;
+			window.mainFrame.location.href = "${ctx}/yw/gzbzk/ywGzbzkWjmbDetail/form?id="+id+"&wjmbId="+wjmbId+"&hierarchy="+treeNode.level;
 		});
 
 };

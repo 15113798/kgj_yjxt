@@ -14,6 +14,7 @@ import com.jeesite.modules.sys.utils.AreaUtils;
 import com.jeesite.modules.yw.entity.gzbzk.YwGzbzkWjmbDetail;
 import com.jeesite.modules.yw.service.gzbzk.YwGzbzkWjmbDetailService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.apache.xmlbeans.XmlException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,6 +30,7 @@ import com.jeesite.common.web.BaseController;
 import com.jeesite.modules.yw.entity.gzbzk.YwGzbzkWjmbInfo;
 import com.jeesite.modules.yw.service.gzbzk.YwGzbzkWjmbInfoService;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -154,6 +156,25 @@ public class YwGzbzkWjmbInfoController extends BaseController {
 		}
 		return mapList;
 	}
+
+
+
+
+	/*
+		提供章节的tree结构
+		入参 文件模板的主键id
+	 */
+	@RequestMapping(value = "createWord")
+	@ResponseBody
+	public void createWord() throws IOException, XmlException {
+		String id = "3c8ccc7164ce4a3ea234c27ef202a25a";
+		ywGzbzkWjmbInfoService.createWord(id);
+
+	}
+
+
+
+
 
 	
 }

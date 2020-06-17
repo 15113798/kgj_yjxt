@@ -27,7 +27,10 @@ import com.jeesite.common.mybatis.mapper.query.QueryType;
 		@Column(name="is_bold", attrName="isBold", label="是否加粗"),
 		@Column(name="url_img", attrName="urlImg", label="图片路径"),
 		@Column(name="content", attrName="content", label="内容"),
-	}, orderBy="a.id DESC"
+		@Column(name="number", attrName="number", label="排序"),
+		@Column(name="hierarchy", attrName="hierarchy", label="层级"),
+		@Column(name="order_number", attrName="numberCode", label="具体编号"),
+	}, orderBy="a.number "
 )
 public class YwGzbzkWjmbDetail extends DataEntity<YwGzbzkWjmbDetail> {
 	
@@ -41,7 +44,35 @@ public class YwGzbzkWjmbDetail extends DataEntity<YwGzbzkWjmbDetail> {
 	private Integer isBold;		// 是否加粗
 	private String urlImg;		// 图片路径
 	private String content;		// 内容
-	
+	private Integer number;	//排序序号
+	private Integer hierarchy;		//层级
+	private String numberCode;			//具体编号
+
+
+	public Integer getNumber() {
+		return number;
+	}
+
+	public void setNumber(Integer number) {
+		this.number = number;
+	}
+
+	public String getNumberCode() {
+		return numberCode;
+	}
+
+	public void setNumberCode(String numberCode) {
+		this.numberCode = numberCode;
+	}
+
+	public Integer getHierarchy() {
+		return hierarchy;
+	}
+
+	public void setHierarchy(Integer hierarchy) {
+		this.hierarchy = hierarchy;
+	}
+
 	public YwGzbzkWjmbDetail() {
 		this(null);
 	}
@@ -67,7 +98,9 @@ public class YwGzbzkWjmbDetail extends DataEntity<YwGzbzkWjmbDetail> {
 	public void setPid(String pid) {
 		this.pid = pid;
 	}
-	
+
+
+
 	@NotBlank(message="节点名称不能为空")
 	@Length(min=0, max=50, message="节点名称长度不能超过 50 个字符")
 	public String getJdName() {
