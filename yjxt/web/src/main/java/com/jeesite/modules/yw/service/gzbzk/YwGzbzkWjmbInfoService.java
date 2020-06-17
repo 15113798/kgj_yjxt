@@ -14,6 +14,7 @@ import java.util.List;
 
 import com.jeesite.common.idgen.IdGenerate;
 import com.jeesite.common.lang.StringUtils;
+import com.jeesite.modules.sys.utils.DictUtils;
 import com.jeesite.modules.yw.entity.gzbzk.YwGzbzkWjmbDetail;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.poi.xwpf.usermodel.*;
@@ -119,8 +120,13 @@ public class YwGzbzkWjmbInfoService extends CrudService<YwGzbzkWjmbInfoDao, YwGz
 		System.out.println("该模板最大层级数为----->"+cjCount);
 		//增加自定义标题样式
 		for (int i = 1; i <= cjCount; i++) {
-			addCustomHeadingStyle(doc, "style"+cjCount, cjCount);
+			String styleStr = "style"+i;
+			addCustomHeadingStyle(doc, styleStr, i);
 		}
+	/*	addCustomHeadingStyle(doc, "style1", 1);
+		addCustomHeadingStyle(doc, "style2", 2);
+		addCustomHeadingStyle(doc, "style3", 3);*/
+
 
 
 		//通过模板id去获取到明细表中该模板的所有章节及内容
@@ -179,17 +185,36 @@ public class YwGzbzkWjmbInfoService extends CrudService<YwGzbzkWjmbInfoDao, YwGz
 					XWPFParagraph paragraph = doc.createParagraph();
 					paragraph.setSpacingLineRule(LineSpacingRule.AT_LEAST);
 					XWPFRun run = paragraph.createRun();
-					run.setFontSize(12);
-					run.setBold(true);
+					String dictVal = DictUtils.getDictLabel("zt",findDetail.getFontsize(),"12");
+					run.setFontSize(Integer.parseInt(dictVal));
+					if(findDetail.getIsBold() == 1){
+						run.setBold(true);
+					}else{
+						run.setBold(false);
+					}
 					run.setText(findDetail.getNumberCode()+findDetail.getJdName());
 					paragraph.setStyle("style"+findDetail.getHierarchy());
+
+					//如果该标题含有内容，则视为是该标题下面的段落
+					if(StringUtils.isNotEmpty(findDetail.getContent())){
+						XWPFParagraph pDL = doc.createParagraph();
+						pDL.setSpacingLineRule(LineSpacingRule.AT_LEAST);
+						XWPFRun dlRun = pDL.createRun();
+						dlRun.setFontSize(Integer.parseInt(DictUtils.getDictLabel("zt",findDetail.getFontsize(),"12"))-2);
+						dlRun.setBold(false);
+						dlRun.setText(findDetail.getContent());
+					}
 				}else{
 					// 段落
 					XWPFParagraph paragraph = doc.createParagraph();
 					paragraph.setSpacingLineRule(LineSpacingRule.AT_LEAST);
 					XWPFRun run = paragraph.createRun();
-					run.setFontSize(12);
-					run.setBold(false);
+					run.setFontSize(Integer.parseInt(findDetail.getFontsize()));
+					if(findDetail.getIsBold() == 1){
+						run.setBold(true);
+					}else{
+						run.setBold(false);
+					}
 					run.setText(findDetail.getJdName());
 					paragraph.setStyle("style"+findDetail.getHierarchy());
 				}

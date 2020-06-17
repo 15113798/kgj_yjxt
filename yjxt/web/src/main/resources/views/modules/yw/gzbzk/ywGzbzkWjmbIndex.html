@@ -1,6 +1,6 @@
 <% layout('/layouts/default.html', {title: '章节信息', libs: ['layout','zTree']}){ %>
 
-<input style="display: none;" id="mbId" value="${mbId}"/>
+<input type="text" style="display: none;" id="mbId" value="${mbId}"/>
 <div class="ui-layout-west">
 	<div class="main-content">
 		<div class="box box-main">
@@ -9,6 +9,7 @@
 					<i class="fa icon-grid"></i> ${text('章节目录')}
 				</div>
 				<div class="box-tools pull-right">
+					<button type="button" class="btn btn-sm btn-default" id="downFile">${text('在线生成')}</button>&nbsp;
 					<button type="button" class="btn btn-box-tool" id="btnExpand" title="${text('展开')}" style="display:none;"><i class="fa fa-chevron-up"></i></button>
 					<button type="button" class="btn btn-box-tool" id="btnCollapse" title="${text('折叠')}"><i class="fa fa-chevron-down"></i></button>
 					<button type="button" class="btn btn-box-tool" id="btnRefresh" title="${text('刷新')}"><i class="fa fa-refresh"></i></button>
@@ -49,6 +50,8 @@ var setting = {
 		for(var i=0; i<nodes.length; i++) {
 			tree.expandNode(nodes[i], true, false, false);
 		}
+		//展开所有节点
+		//tree.expandAll();
 
 	}, null, null, js.text('loading.message'));
 };loadTree();
@@ -67,6 +70,20 @@ $('#btnRefresh').click(function(){
 	loadTree();
 });
 
+$('#downFile').click(function(){
+	var mbId = $('#mbId').val();
+	layer.confirm('您确定要生成该文件吗?',{btn: ['确定', '取消'],title:"提示"}, function(){
+
+		js.ajaxSubmit("${ctx}/yw/gzbzk/ywGzbzkWjmbInfo/createWord?mbId="+mbId , function(data){
+			if(data.result == Global.TRUE){
+				js.showMessage(data.message);
+			}else{
+				js.showMessage(data.message);
+			}
+		}, "json");
+	});
+});
+
 
 
 //绑定ztree的自定义图标
@@ -82,8 +99,7 @@ function addHoverDom(treeId, treeNode) {
 		//加载添加按钮
 		sObj.after(updateStr); //加载添加按钮
 
-
-		if(treeNode.isParent){
+		if(treeNode.level == 0 ){
 
 		}else{
 			var deleteStr = "<span class='button remove' id='deleteBtn_" + treeNode.tId + "' title='del node' onfocus='this.blur();'>"; //定义删除按钮

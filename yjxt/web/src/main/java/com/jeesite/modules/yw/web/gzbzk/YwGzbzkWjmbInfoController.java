@@ -166,10 +166,9 @@ public class YwGzbzkWjmbInfoController extends BaseController {
 	 */
 	@RequestMapping(value = "createWord")
 	@ResponseBody
-	public void createWord() throws IOException, XmlException {
-		String id = "3c8ccc7164ce4a3ea234c27ef202a25a";
-		ywGzbzkWjmbInfoService.createWord(id);
-
+	public String createWord(String mbId) throws IOException, XmlException {
+		ywGzbzkWjmbInfoService.createWord(mbId);
+		return renderResult(Global.TRUE, text("操作成功"));
 	}
 
 

@@ -66,11 +66,15 @@ public class YwGzbzkWjmbDetailService extends CrudService<YwGzbzkWjmbDetailDao, 
 			String id = ywGzbzkWjmbDetail.getPid();
 			List<YwGzbzkWjmbDetail> resultList = findParent(new ArrayList<YwGzbzkWjmbDetail>(),id);
 			String numberCode ="";
-			for (int i =resultList.size()-1;i>=resultList.size()-2;i--) {
-				int enCode = resultList.get(i).getNumber();
-				numberCode = numberCode+"."+enCode;
+			if(null == resultList || resultList.size()==0){
+				numberCode = ywGzbzkWjmbDetail.getNumber().toString();
+			}else{
+				for (int i =resultList.size()-1;i>=0;i--) {
+					int enCode = resultList.get(i).getNumber();
+					numberCode = numberCode+"."+enCode;
+				}
+				numberCode = numberCode.substring(1,numberCode.length())+"."+ywGzbzkWjmbDetail.getNumber();
 			}
-			numberCode = numberCode.substring(1,numberCode.length())+"."+ywGzbzkWjmbDetail.getNumber();
 			ywGzbzkWjmbDetail.setNumberCode(numberCode);
 			super.save(ywGzbzkWjmbDetail);
 		}else{
