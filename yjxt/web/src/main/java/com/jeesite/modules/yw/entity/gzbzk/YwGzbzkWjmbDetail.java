@@ -101,7 +101,6 @@ public class YwGzbzkWjmbDetail extends DataEntity<YwGzbzkWjmbDetail> {
 
 
 
-	@NotBlank(message="节点名称不能为空")
 	@Length(min=0, max=50, message="节点名称长度不能超过 50 个字符")
 	public String getJdName() {
 		return jdName;

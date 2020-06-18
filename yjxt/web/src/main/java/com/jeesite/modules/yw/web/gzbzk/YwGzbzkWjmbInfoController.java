@@ -96,12 +96,7 @@ public class YwGzbzkWjmbInfoController extends BaseController {
 	@ResponseBody
 	public String save(@Validated YwGzbzkWjmbInfo ywGzbzkWjmbInfo) {
 		ywGzbzkWjmbInfoService.save(ywGzbzkWjmbInfo);
-		//在往主表插了一条记录之后，往子表章节表也插一条记录作为顶级元素
-		YwGzbzkWjmbDetail detail = new YwGzbzkWjmbDetail();
-		detail.setPid("0");
-		detail.setWjmbId(ywGzbzkWjmbInfo.getId());
-		detail.setJdName(ywGzbzkWjmbInfo.getName());
-		ywGzbzkWjmbDetailService.save(detail);
+
 
 		return renderResult(Global.TRUE, text("保存规章标准库-文件模板成功！"));
 	}
@@ -114,6 +109,14 @@ public class YwGzbzkWjmbInfoController extends BaseController {
 	@ResponseBody
 	public String delete(YwGzbzkWjmbInfo ywGzbzkWjmbInfo) {
 		ywGzbzkWjmbInfoService.delete(ywGzbzkWjmbInfo);
+		//在删除父节点的时候，顺带把所有的子节点都删除
+		YwGzbzkWjmbDetail detail = new YwGzbzkWjmbDetail();
+		detail.setWjmbId(ywGzbzkWjmbInfo.getId());
+		//通过模板id去查询所有的章节信息
+		List<YwGzbzkWjmbDetail>list = ywGzbzkWjmbDetailService.findList(detail);
+		for (int i = 0; i < list.size(); i++) {
+			ywGzbzkWjmbDetailService.delete(list.get(i));
+		}
 		return renderResult(Global.TRUE, text("删除规章标准库-文件模板成功！"));
 	}
 

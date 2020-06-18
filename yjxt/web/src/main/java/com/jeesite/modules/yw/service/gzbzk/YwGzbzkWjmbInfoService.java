@@ -85,10 +85,36 @@ public class YwGzbzkWjmbInfoService extends CrudService<YwGzbzkWjmbInfoDao, YwGz
 	@Override
 	@Transactional(readOnly=false)
 	public void save(YwGzbzkWjmbInfo ywGzbzkWjmbInfo) {
+		//如果主表记录是新记录，则直接往子表也插一条记录
+		//如果主表是修改，则需要去全局update一把字表
 		if (ywGzbzkWjmbInfo.getIsNewRecord()){
 			ywGzbzkWjmbInfo.setId(IdGenerate.uuid());
+
+			super.save(ywGzbzkWjmbInfo);
+			//在往主表插了一条记录之后，往子表章节表也插一条记录作为顶级元素
+			YwGzbzkWjmbDetail detail = new YwGzbzkWjmbDetail();
+			detail.setPid("0");
+			detail.setWjmbId(ywGzbzkWjmbInfo.getId());
+			detail.setJdName(ywGzbzkWjmbInfo.getName());
+			detailService.save(detail);
+		}else {
+			super.save(ywGzbzkWjmbInfo);
+			//如果是修改的话，这个时候需要去更改下顶级目录的名称
+			//先去查询到顶级目录在字表中的id，然后通过id去更改该条记录的节点名称
+			YwGzbzkWjmbDetail detail = new YwGzbzkWjmbDetail();
+			detail.setWjmbId(ywGzbzkWjmbInfo.getId());
+			detail.setPid("0");
+			List<YwGzbzkWjmbDetail>detailsList = detailService.findList(detail);
+			if(null != detailService){
+				YwGzbzkWjmbDetail fDetail = detailsList.get(0);
+				String id = fDetail.getId();
+				YwGzbzkWjmbDetail findEntity = new YwGzbzkWjmbDetail();
+				findEntity.setId(id);
+				findEntity.setJdName(ywGzbzkWjmbInfo.getName());
+				detailService.update(findEntity);
+			}
 		}
-		super.save(ywGzbzkWjmbInfo);
+
 	}
 	
 	/**

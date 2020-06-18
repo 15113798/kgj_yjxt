@@ -61,32 +61,27 @@
 					<div class="col-xs-6">
 						<div class="form-group">
 							<label class="control-label col-sm-4" title="">
-								<span class="required ">*</span> ${text('节点名称')}：<i class="fa icon-question hide"></i></label>
-							<div class="col-sm-8">
-								<#form:input path="jdName" maxlength="50" class="form-control required"/>
-							</div>
-						</div>
-					</div>
-					<div class="col-xs-6">
-						<div class="form-group">
-							<label class="control-label col-sm-4" title="">
-								<span class="required ">*</span> ${text('序号')}：<i class="fa icon-question hide"></i></label>
-							<div class="col-sm-8">
-								<#form:input path="number" maxlength="50" class="form-control required"/>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-xs-6">
-						<div class="form-group">
-							<label class="control-label col-sm-4" title="">
 								<span class="required">*</span> ${text('节点类型')}：<i class="fa icon-question hide"></i></label>
 							<div class="col-sm-8">
-								<#form:select path="jdType" dictType="jd_type" blankOption="true" class="form-control required" />
+								<#form:select path="jdType" dictType="jd_type" blankOption="true" id="jdType" class="form-control required" onchange="changeType()"/>
 							</div>
 						</div>
 					</div>
+					<div class="col-xs-6">
+						<div class="form-group">
+							<label class="control-label col-sm-4" title="">
+								<span class="required ">*</span> ${text('节点名称')}：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-8">
+								<#form:input id="jd_name" path="jdName" maxlength="50" class="form-control"/>
+							</div>
+						</div>
+					</div>
+
+
+
+				</div>
+				<div class="row">
+
 
 					<div class="col-xs-6">
 						<div class="form-group">
@@ -97,6 +92,18 @@
 							</div>
 						</div>
 					</div>
+
+					<div class="col-xs-6">
+						<div class="form-group">
+							<label class="control-label col-sm-4" title="">
+								<span class="required ">*</span> ${text('排序号')}：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-8">
+								<#form:input path="number" maxlength="50" class="form-control required"/>
+							</div>
+						</div>
+					</div>
+
+
 				</div>
 
 				<div class="row">
@@ -131,7 +138,7 @@
 					</div>
 				</div>-->
 
-				<div class="row">
+				<div class="row" id="content" >
 					<div class="col-xs-12">
 						<div class="form-group">
 							<label class="control-label col-sm-2" title="">
@@ -174,6 +181,44 @@ $("#inputForm").validate({
 			}
 		}, "json");
     }
+});
+
+
+
+
+
+
+function changeType() {
+	var obj=document.getElementById("jdType");
+	var index=obj.selectedIndex;
+	var value=obj.options[index].value;
+	var text=obj.options[index].text;
+
+	//如果选择标题的话，则不显示内容框，如果选择段落的话，则显示内容框不显示节点名称
+	if(index == 1){
+
+		//$('#jd_name').val('');
+		$("#jd_name").attr("readOnly",false);
+		$('#content').val('');
+		$('#content').hide();
+	}else if(index == 2){
+		$('#jd_name').val(text);
+		$("#jd_name").attr("readOnly",true);
+		$('#content').val('');
+		$('#content').show();
+	}else{
+		$('#jd_name').val('');
+		$("#jd_name").attr("readOnly",false);
+		$('#jd_name').show();
+		$('#content').val('');
+		$('#content').show();
+	}
+}
+
+
+$(function(){
+	//页面加载完之后，直接加载节点类型的onchange事件，进行显示影藏
+	changeType();
 });
 
 
