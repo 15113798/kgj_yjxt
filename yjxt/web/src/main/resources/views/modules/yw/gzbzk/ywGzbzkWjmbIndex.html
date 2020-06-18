@@ -73,14 +73,7 @@ $('#btnRefresh').click(function(){
 $('#downFile').click(function(){
 	var mbId = $('#mbId').val();
 	layer.confirm('您确定要生成该文件吗?',{btn: ['确定', '取消'],title:"提示"}, function(){
-
-		js.ajaxSubmit("${ctx}/yw/gzbzk/ywGzbzkWjmbInfo/createWord?mbId="+mbId , function(data){
-			if(data.result == Global.TRUE){
-				js.showMessage(data.message);
-			}else{
-				js.showMessage(data.message);
-			}
-		}, "json");
+		window.open("${ctx}/yw/gzbzk/ywGzbzkWjmbInfo/createWord?mbId="+mbId,'_self');
 	});
 });
 
@@ -99,7 +92,7 @@ function addHoverDom(treeId, treeNode) {
 		//加载添加按钮
 		sObj.after(updateStr); //加载添加按钮
 
-		if(treeNode.level == 0 ){
+		if(treeNode.level == 0 ||treeNode.isParent ){
 
 		}else{
 			var deleteStr = "<span class='button remove' id='deleteBtn_" + treeNode.tId + "' title='del node' onfocus='this.blur();'>"; //定义删除按钮

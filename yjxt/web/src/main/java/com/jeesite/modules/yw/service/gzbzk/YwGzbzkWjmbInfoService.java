@@ -3,16 +3,16 @@
  */
 package com.jeesite.modules.yw.service.gzbzk;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.math.BigInteger;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import com.jeesite.common.codec.EncodeUtils;
 import com.jeesite.common.idgen.IdGenerate;
+import com.jeesite.common.io.FileUtils;
 import com.jeesite.common.lang.StringUtils;
 import com.jeesite.modules.sys.utils.DictUtils;
 import com.jeesite.modules.yw.entity.gzbzk.YwGzbzkWjmbDetail;
@@ -28,6 +28,9 @@ import com.jeesite.common.entity.Page;
 import com.jeesite.common.service.CrudService;
 import com.jeesite.modules.yw.entity.gzbzk.YwGzbzkWjmbInfo;
 import com.jeesite.modules.yw.dao.gzbzk.YwGzbzkWjmbInfoDao;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * 规章标准库-文件模板Service
@@ -68,7 +71,6 @@ public class YwGzbzkWjmbInfoService extends CrudService<YwGzbzkWjmbInfoDao, YwGz
 	/**
 	 * 查询分页数据
 	 * @param ywGzbzkWjmbInfo 查询条件
-	 * @param ywGzbzkWjmbInfo.page 分页对象
 	 * @return
 	 */
 	@Override
@@ -111,7 +113,7 @@ public class YwGzbzkWjmbInfoService extends CrudService<YwGzbzkWjmbInfoDao, YwGz
 
 
 
-	public  void createWord(String mbId) throws IOException, XmlException {
+	public  void createWord(String mbId, HttpServletResponse resp, HttpServletRequest request) throws IOException, XmlException {
 
 		doc = new XWPFDocument();
 
@@ -123,11 +125,6 @@ public class YwGzbzkWjmbInfoService extends CrudService<YwGzbzkWjmbInfoDao, YwGz
 			String styleStr = "style"+i;
 			addCustomHeadingStyle(doc, styleStr, i);
 		}
-	/*	addCustomHeadingStyle(doc, "style1", 1);
-		addCustomHeadingStyle(doc, "style2", 2);
-		addCustomHeadingStyle(doc, "style3", 3);*/
-
-
 
 		//通过模板id去获取到明细表中该模板的所有章节及内容
 		YwGzbzkWjmbInfo info = infoService.get(mbId);
@@ -143,7 +140,6 @@ public class YwGzbzkWjmbInfoService extends CrudService<YwGzbzkWjmbInfoDao, YwGz
 		r.setText(info.getName());
 		r.setBold(true);//设置为粗体
 
-
 		//开始遍历内容。遍历内容的时候注意，poi没有发现能自动生成标题编号的api。只能自己进行拼接在节点名前
 		//至于节点层级的话和自定义样式层级关系相对应
 		//传入顶级，开始递归
@@ -153,14 +149,17 @@ public class YwGzbzkWjmbInfoService extends CrudService<YwGzbzkWjmbInfoDao, YwGz
 		YwGzbzkWjmbDetail DjParent = detailService.findList(detail).get(0);
 		startWriteContent(DjParent.getId());
 
+		resp.reset();//清除空白
+		resp.setHeader("Access-Control-Allow-Origin", "*");//所有域都可以跨
+		resp.setHeader("Content-Type", "application/octet-stream;charset=UTF-8");//二进制  流文件
+		resp.addHeader("Content-Disposition",
+				"attachment; filename=\"" + new String(info.getName().getBytes("gbk"),"iso8859-1") +  ".doc" + "\"");
 
+		doc.write(resp.getOutputStream());
+		resp.setHeader("Connection", "close");//关闭请求头连接
+		//设置文件在浏览器打开还是下载
+		resp.setContentType("application/x-download");
 
-		FileOutputStream out = new FileOutputStream("C:/Users/Administrator/Desktop/testMb.docx");
-
-		//生成页眉
-		//doc.createTOC();
-		doc.write(out);
-		out.close();
 
 	}
 
@@ -185,13 +184,14 @@ public class YwGzbzkWjmbInfoService extends CrudService<YwGzbzkWjmbInfoDao, YwGz
 					XWPFParagraph paragraph = doc.createParagraph();
 					paragraph.setSpacingLineRule(LineSpacingRule.AT_LEAST);
 					XWPFRun run = paragraph.createRun();
-					String dictVal = DictUtils.getDictLabel("zt",findDetail.getFontsize(),"12");
+					String dictVal = DictUtils.getDictLabel("zh",findDetail.getFontsize(),"12");
 					run.setFontSize(Integer.parseInt(dictVal));
 					if(findDetail.getIsBold() == 1){
 						run.setBold(true);
 					}else{
 						run.setBold(false);
 					}
+					run.setFontFamily(DictUtils.getDictLabel("zt",findDetail.getTypeface(),"仿宋"));
 					run.setText(findDetail.getNumberCode()+findDetail.getJdName());
 					paragraph.setStyle("style"+findDetail.getHierarchy());
 
@@ -200,23 +200,25 @@ public class YwGzbzkWjmbInfoService extends CrudService<YwGzbzkWjmbInfoDao, YwGz
 						XWPFParagraph pDL = doc.createParagraph();
 						pDL.setSpacingLineRule(LineSpacingRule.AT_LEAST);
 						XWPFRun dlRun = pDL.createRun();
-						dlRun.setFontSize(Integer.parseInt(DictUtils.getDictLabel("zt",findDetail.getFontsize(),"12"))-2);
+						dlRun.setFontSize(Integer.parseInt(DictUtils.getDictLabel("zh",findDetail.getFontsize(),"12"))-2);
 						dlRun.setBold(false);
-						dlRun.setText(findDetail.getContent());
+						dlRun.setFontFamily(DictUtils.getDictLabel("zt",findDetail.getTypeface(),"仿宋"));
+						//段落前放4个空格
+						dlRun.setText("    "+findDetail.getContent());
 					}
 				}else{
 					// 段落
 					XWPFParagraph paragraph = doc.createParagraph();
 					paragraph.setSpacingLineRule(LineSpacingRule.AT_LEAST);
 					XWPFRun run = paragraph.createRun();
-					run.setFontSize(Integer.parseInt(findDetail.getFontsize()));
+					run.setFontSize(Integer.parseInt(DictUtils.getDictLabel("zh",findDetail.getFontsize(),"12"))-2);
 					if(findDetail.getIsBold() == 1){
 						run.setBold(true);
 					}else{
 						run.setBold(false);
 					}
-					run.setText(findDetail.getJdName());
-					paragraph.setStyle("style"+findDetail.getHierarchy());
+					run.setFontFamily(DictUtils.getDictLabel("zt",findDetail.getTypeface(),"仿宋"));
+					run.setText("    "+findDetail.getContent());
 				}
 
 				startWriteContent(findDetail.getId());
