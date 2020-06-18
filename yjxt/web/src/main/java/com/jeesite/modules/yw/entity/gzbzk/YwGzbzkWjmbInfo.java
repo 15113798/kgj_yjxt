@@ -23,13 +23,24 @@ import com.jeesite.common.mybatis.mapper.query.QueryType;
 		@Column(name="update_by", attrName="updateBy", label="修改人", isInsert=false, isQuery=false),
 		@Column(name="create_date", attrName="createDate", label="创建时间", isUpdate=false, isQuery=false),
 		@Column(name="update_date", attrName="updateDate", label="修改时间", isInsert=false, isQuery=false),
+		@Column(name="model_type", attrName="modelType", label="模板类型"),
 	}, orderBy="a.update_date DESC"
 )
 public class YwGzbzkWjmbInfo extends DataEntity<YwGzbzkWjmbInfo> {
 	
 	private static final long serialVersionUID = 1L;
 	private String name;		// 模板名称
-	
+	private String modelType;
+
+
+	public String getModelType() {
+		return modelType;
+	}
+
+	public void setModelType(String modelType) {
+		this.modelType = modelType;
+	}
+
 	public YwGzbzkWjmbInfo() {
 		this(null);
 	}
@@ -47,5 +58,7 @@ public class YwGzbzkWjmbInfo extends DataEntity<YwGzbzkWjmbInfo> {
 	public void setName(String name) {
 		this.name = name;
 	}
+
+
 	
 }
