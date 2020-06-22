@@ -176,10 +176,12 @@
 		var value=obj.options[index].value;
 		var text=obj.options[index].text;
 
+		var jd_name = $('#jd_name').val();
 		//如果选择标题的话，则不显示内容框，如果选择段落的话，则显示内容框不显示节点名称
 		if(index == 1){
-
-			//$('#jd_name').val('');
+			if('段落' == jd_name){
+				$('#jd_name').val('');
+			}
 			$("#jd_name").attr("readOnly",false);
 			$('#content').val('');
 			$('#content').hide();
