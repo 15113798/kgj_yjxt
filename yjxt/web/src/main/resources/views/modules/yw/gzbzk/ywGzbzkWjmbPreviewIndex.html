@@ -23,7 +23,7 @@
 </div>
 <div class="ui-layout-center" id="iframeDiv">
 	<iframe id="mainFrame" name="mainFrame" class="ui-layout-content p0"
-		src="${ctx}/yw/gzbzk/ywGzbzkWjmbInfo/createPreview"></iframe>
+		src=""></iframe>
 </div>
 <% } %>
 <script>
@@ -47,7 +47,7 @@ var setting = {
 		}
 	}
 }, tree, loadTree = function(){
-	js.ajaxSubmit("${ctx}/yw/gzbzk/ywGzbzkWjmbInfo/treeData?id="+$('#mbId').val() , function(data){
+	js.ajaxSubmit("${ctx}/yw/gzbzk/ywGzbzkWjmbInfo/treeData2?id="+$('#mbId').val() , function(data){
 		tree = $.fn.zTree.init($("#tree"), setting, data);//.expandAll(true);
 		// 展开第一级节点
 		var nodes = tree.getNodesByParam("level", 0);

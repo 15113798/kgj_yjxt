@@ -173,6 +173,37 @@ public class YwGzbzkWjmbInfoController extends BaseController {
 
 
 
+	/*
+		提供章节的tree结构
+		入参 文件模板的主键id
+	 */
+	@RequestMapping(value = "treeData2")
+	@ResponseBody
+	public List<Map<String, Object>> treeData2(String id) {
+		List<Map<String, Object>> mapList = ListUtils.newArrayList();
+		List<YwGzbzkWjmbDetail> list = null;
+		if (StringUtils.isNotBlank(id)){
+			// 获取到文件模板主表的id,通过id去文件模板表中获取到对应的一条记录。
+			YwGzbzkWjmbDetail detail = new  YwGzbzkWjmbDetail();
+			detail.setWjmbId(id);
+			detail.setJdType("1");
+			list = ywGzbzkWjmbDetailService.findList(detail);
+		}
+		for (int i=0; i<list.size(); i++){
+			YwGzbzkWjmbDetail e = list.get(i);
+			Map<String, Object> map = MapUtils.newHashMap();
+			map.put("id", e.getId());
+			map.put("pId", e.getPid());
+			map.put("name", StringUtils.getTreeNodeName(null, e.getId(), e.getJdName()));
+			map.put("title", e.getJdName());
+			map.put("wjmbId",e.getWjmbId());
+			mapList.add(map);
+		}
+		return mapList;
+	}
+
+
+
 
 	/*
 		提供章节的tree结构
