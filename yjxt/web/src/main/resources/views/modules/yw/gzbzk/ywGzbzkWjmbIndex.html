@@ -40,6 +40,9 @@ var setting = {
 	data:{key:{title:"title"},simpleData:{enable:true}},
 	callback:{
 		onClick:function(event, treeId, treeNode){
+			var id = treeNode.id;
+			var wjmbId = treeNode.wjmbId;
+			window.mainFrame.location.href = "${ctx}/yw/gzbzk/ywGzbzkWjmbDetail/form?id="+id+"&wjmbId="+wjmbId+"&hierarchy="+treeNode.level;
 		}
 	}
 }, tree, loadTree = function(){

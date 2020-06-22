@@ -96,6 +96,7 @@ public class YwGzbzkWjmbInfoService extends CrudService<YwGzbzkWjmbInfoDao, YwGz
 			detail.setPid("0");
 			detail.setWjmbId(ywGzbzkWjmbInfo.getId());
 			detail.setJdName(ywGzbzkWjmbInfo.getName());
+			detail.setJdType("1");
 			detailService.save(detail);
 		}else {
 			super.save(ywGzbzkWjmbInfo);
