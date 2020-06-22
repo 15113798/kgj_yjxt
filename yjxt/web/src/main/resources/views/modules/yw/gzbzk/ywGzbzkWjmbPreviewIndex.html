@@ -8,7 +8,7 @@
 				<div class="box-title">
 					<i class="fa icon-grid"></i> ${text('章节目录')}
 				</div>
-				<div class="box-tools pull-right">
+				<div class="box-tools pull-right" style="display: none;">
 					<button type="button" class="btn btn-sm btn-default" id="preview">${text('预览')}</button>&nbsp;
 					<button type="button" class="btn btn-box-tool" id="btnExpand" title="${text('展开')}" style="display:none;"><i class="fa fa-chevron-up"></i></button>
 					<button type="button" class="btn btn-box-tool" id="btnCollapse" title="${text('折叠')}"><i class="fa fa-chevron-down"></i></button>
@@ -56,6 +56,9 @@ var setting = {
 		}
 		//展开所有节点
 		//tree.expandAll();
+		tree.expandAll(true);
+		$(this).hide();
+		$('#btnCollapse').show();
 
 	}, null, null, js.text('loading.message'));
 };loadTree();
