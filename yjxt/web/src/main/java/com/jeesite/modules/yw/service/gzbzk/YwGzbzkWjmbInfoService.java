@@ -28,6 +28,7 @@ import com.jeesite.common.entity.Page;
 import com.jeesite.common.service.CrudService;
 import com.jeesite.modules.yw.entity.gzbzk.YwGzbzkWjmbInfo;
 import com.jeesite.modules.yw.dao.gzbzk.YwGzbzkWjmbInfoDao;
+import org.springframework.web.util.HtmlUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -53,6 +54,8 @@ public class YwGzbzkWjmbInfoService extends CrudService<YwGzbzkWjmbInfoDao, YwGz
 	 * word整体样式
 	 */
 	private static CTStyles wordStyles = null;
+
+	private static StringBuffer resultHmtl = null;
 
 
 
@@ -193,6 +196,29 @@ public class YwGzbzkWjmbInfoService extends CrudService<YwGzbzkWjmbInfoDao, YwGz
 
 
 
+
+
+	public  String  createPreview(String mbId) {
+		resultHmtl = new StringBuffer();
+		//通过模板id去获取到文件名
+		YwGzbzkWjmbInfo info = infoService.get(mbId);
+		//文档头
+		resultHmtl.append("<div id='"+info.getId()+"'style='text-align:center;font-size:24px;font-weight:bold;'>"+info.getName()+"</div>");
+
+		//开始遍历内容。
+		YwGzbzkWjmbDetail detail = new YwGzbzkWjmbDetail();
+		detail.setWjmbId(mbId);
+		detail.setPid("0");
+		YwGzbzkWjmbDetail DjParent = detailService.findList(detail).get(0);
+		startWritePreviewContent(DjParent.getId());
+		String result = resultHmtl.toString();
+
+		return result;
+	}
+
+
+
+
 	//传入顶级id。获取子级递归
 	//数据库中存的序号number字段只是为了ztree的排序。生成模板的标题编号是需要从这里递归获取的
 	public void startWriteContent(String mbId){
@@ -249,6 +275,52 @@ public class YwGzbzkWjmbInfoService extends CrudService<YwGzbzkWjmbInfoDao, YwGz
 				}
 
 				startWriteContent(findDetail.getId());
+			}
+		}
+	}
+
+
+
+
+
+	//传入顶级id。获取子级递归
+	//数据库中存的序号number字段只是为了ztree的排序。生成模板的标题编号是需要从这里递归获取的
+	public void startWritePreviewContent(String mbId){
+		//通过以该id为pid去查询子级
+		YwGzbzkWjmbDetail detail = new YwGzbzkWjmbDetail();
+		detail.setPid(mbId);
+		List<YwGzbzkWjmbDetail> list = detailService.findList(detail);
+
+		if(null != list ){
+			for (int i = 0; i < list.size(); i++) {
+				YwGzbzkWjmbDetail findDetail = list.get(i);
+				int isBold = findDetail.getIsBold();
+				//如果当前节点是标题，则进入标题方法，如果当前节点是段落。则进入段落方法。
+				if("1".equals(findDetail.getJdType())){
+					// 标题
+					if(isBold == 1){
+						resultHmtl.append("<div id='"+findDetail.getId()+"'style='font-size:20px;font-weight:bold;'>"+findDetail.getNumberCode()+findDetail.getJdName()+"</div>");
+					}else{
+						resultHmtl.append("<div id='"+findDetail.getId()+"'style='font-size:20px;'>"+findDetail.getNumberCode()+findDetail.getJdName()+"</div>");
+					}
+
+					/*//如果该标题含有内容，则视为是该标题下面的段落
+					if(StringUtils.isNotEmpty(findDetail.getContent())){
+						if(isBold == 1){
+							resultHmtl.append("<div style='font-size:16px;font-weight:bold;'>"+"&nbsp;&nbsp;&nbsp;&nbsp;"+HtmlUtils.htmlEscapeDecimal(findDetail.getContent())+"</div>");
+						}else{
+							resultHmtl.append("<div style='font-size:16px;'>"+"&nbsp;&nbsp;&nbsp;&nbsp;"+HtmlUtils.htmlEscapeDecimal(findDetail.getContent())+"</div>");
+						}
+					}*/
+				}else{
+					if(isBold == 1){
+						resultHmtl.append("<div id='"+findDetail.getId()+"'style='font-size:16px;font-weight:bold;'>"+"&nbsp;&nbsp;&nbsp;&nbsp;"+HtmlUtils.htmlEscapeDecimal(findDetail.getContent())+"</div>");
+					}else{
+						resultHmtl.append("<div id='"+findDetail.getId()+"'style='font-size:16px;'>"+"&nbsp;&nbsp;&nbsp;&nbsp;"+HtmlUtils.htmlEscapeDecimal(findDetail.getContent())+"</div>");
+					}
+				}
+
+				startWritePreviewContent(findDetail.getId());
 			}
 		}
 	}
@@ -372,4 +444,9 @@ public class YwGzbzkWjmbInfoService extends CrudService<YwGzbzkWjmbInfoDao, YwGz
 		styles.addStyle(style);
 
 	}
+
+
+
+
+
 }

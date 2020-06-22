@@ -132,6 +132,17 @@ public class YwGzbzkWjmbInfoController extends BaseController {
 	}
 
 
+
+	/**
+	 * 跳转到编辑节点界面
+	 */
+	@RequestMapping(value = "previewIndex")
+	public String previewIndex(YwGzbzkWjmbInfo ywGzbzkWjmbInfo, Model model) {
+		model.addAttribute("mbId", ywGzbzkWjmbInfo.getId()+"");
+		return "modules/yw/gzbzk/ywGzbzkWjmbPreviewIndex";
+	}
+
+
 	/*
 		提供章节的tree结构
 		入参 文件模板的主键id
@@ -172,6 +183,20 @@ public class YwGzbzkWjmbInfoController extends BaseController {
 	public void createWord(String mbId,HttpServletResponse response, HttpServletRequest request) throws IOException, XmlException {
 		ywGzbzkWjmbInfoService.createWord(mbId,response,request);
 		//return renderResult(Global.TRUE, text("操作成功"));
+	}
+
+
+
+	/*
+		提供章节的tree结构
+		入参 文件模板的主键id
+	 */
+	@RequestMapping(value = "createPreview")
+	public String createPreview(String mbId, Model model) throws IOException, XmlException {
+		String html = ywGzbzkWjmbInfoService.createPreview(mbId);
+		model.addAttribute("html",html);
+
+		return "modules/yw/gzbzk/preview";
 	}
 
 

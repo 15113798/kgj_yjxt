@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.jeesite.common.lang.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.apache.xmlbeans.XmlException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,6 +23,8 @@ import com.jeesite.common.entity.Page;
 import com.jeesite.common.web.BaseController;
 import com.jeesite.modules.yw.entity.gzbzk.YwGzbzkWjmbDetail;
 import com.jeesite.modules.yw.service.gzbzk.YwGzbzkWjmbDetailService;
+
+import java.io.IOException;
 
 /**
  * 规章标准库-文件模板节点明细Controller
@@ -107,5 +110,10 @@ public class YwGzbzkWjmbDetailController extends BaseController {
 		ywGzbzkWjmbDetailService.delete(ywGzbzkWjmbDetail);
 		return renderResult(Global.TRUE, text("删除规章标准库-文件模板节点明细成功！"));
 	}
-	
+
+
+
+
+
+
 }
