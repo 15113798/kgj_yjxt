@@ -49,6 +49,53 @@ public class YwGzbzkWjmbDetail extends DataEntity<YwGzbzkWjmbDetail> {
 	private String numberCode;			//具体编号
 
 
+	private String typeface1;		// 字体
+	private String fontsize1;		// 字号
+	private Integer isBold1;		// 是否加粗
+	private Integer number1;	//排序序号
+	private String jdName1;		// 节点名称
+
+
+	public String getJdName1() {
+		return jdName1;
+	}
+
+	public void setJdName1(String jdName1) {
+		this.jdName1 = jdName1;
+	}
+
+	public Integer getNumber1() {
+		return number1;
+	}
+
+	public void setNumber1(Integer number1) {
+		this.number1 = number1;
+	}
+
+	public String getTypeface1() {
+		return typeface1;
+	}
+
+	public void setTypeface1(String typeface1) {
+		this.typeface1 = typeface1;
+	}
+
+	public String getFontsize1() {
+		return fontsize1;
+	}
+
+	public void setFontsize1(String fontsize1) {
+		this.fontsize1 = fontsize1;
+	}
+
+	public Integer getIsBold1() {
+		return isBold1;
+	}
+
+	public void setIsBold1(Integer isBold1) {
+		this.isBold1 = isBold1;
+	}
+
 	public Integer getNumber() {
 		return number;
 	}

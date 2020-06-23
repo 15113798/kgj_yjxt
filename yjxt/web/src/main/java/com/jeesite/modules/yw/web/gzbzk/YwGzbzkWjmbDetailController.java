@@ -43,7 +43,15 @@ public class YwGzbzkWjmbDetailController extends BaseController {
 	 */
 	@ModelAttribute
 	public YwGzbzkWjmbDetail get(String id, boolean isNewRecord) {
-		return ywGzbzkWjmbDetailService.get(id, isNewRecord);
+		YwGzbzkWjmbDetail detail = ywGzbzkWjmbDetailService.get(id, isNewRecord);
+		if("2".equals(detail.getJdType())){
+			detail.setFontsize1(detail.getFontsize());
+			detail.setIsBold1(detail.getIsBold());
+			detail.setJdName1(detail.getJdName());
+			detail.setTypeface1(detail.getTypeface());
+			detail.setNumber1(detail.getNumber());
+		}
+		return detail;
 	}
 	
 	/**
@@ -91,6 +99,49 @@ public class YwGzbzkWjmbDetailController extends BaseController {
 	@PostMapping(value = "save")
 	@ResponseBody
 	public String save(@Validated YwGzbzkWjmbDetail ywGzbzkWjmbDetail) {
+		if(StringUtils.isBlank(ywGzbzkWjmbDetail.getJdType())){
+			return renderResult(Global.FALSE, text("节点类型必填"));
+		}
+		if("1".equals(ywGzbzkWjmbDetail.getJdType())){
+			if(null == ywGzbzkWjmbDetail.getNumber()){
+				return renderResult(Global.FALSE, text("序号必填"));
+			}
+			if(StringUtils.isBlank(ywGzbzkWjmbDetail.getJdName())){
+				return renderResult(Global.FALSE, text("节点名称必填"));
+			}
+			if(null == ywGzbzkWjmbDetail.getIsBold()){
+				return renderResult(Global.FALSE, text("是否加粗字段必填"));
+			}
+			if(StringUtils.isBlank(ywGzbzkWjmbDetail.getTypeface())){
+				return renderResult(Global.FALSE, text("字体必填"));
+			}
+			if(StringUtils.isBlank(ywGzbzkWjmbDetail.getFontsize())){
+				return renderResult(Global.FALSE, text("字号字段必填"));
+			}
+		}else{
+			if(null == ywGzbzkWjmbDetail.getNumber1()){
+				return renderResult(Global.FALSE, text("排序号必填"));
+			}
+			if(StringUtils.isBlank(ywGzbzkWjmbDetail.getFontsize1())){
+				return renderResult(Global.FALSE, text("字号字段必填"));
+			}
+			if(null == ywGzbzkWjmbDetail.getIsBold1()){
+				return renderResult(Global.FALSE, text("是否加粗字段必填"));
+			}
+			if(StringUtils.isBlank(ywGzbzkWjmbDetail.getTypeface1())){
+				return renderResult(Global.FALSE, text("字体必填"));
+			}
+			if(StringUtils.isBlank(ywGzbzkWjmbDetail.getContent())){
+				return renderResult(Global.FALSE, text("内容必填"));
+			}
+			if(StringUtils.isBlank(ywGzbzkWjmbDetail.getJdName1())){
+				return renderResult(Global.FALSE, text("节点名称必填"));
+			}
+
+
+		}
+
+
 		if(StringUtils.isBlank(ywGzbzkWjmbDetail.getPid())){
 			return renderResult(Global.FALSE, text("请选择对应的节点进行操作！未获取到对应的节点信息"));
 		}

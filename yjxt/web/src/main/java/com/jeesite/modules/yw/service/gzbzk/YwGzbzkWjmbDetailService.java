@@ -53,6 +53,14 @@ public class YwGzbzkWjmbDetailService extends CrudService<YwGzbzkWjmbDetailDao, 
 	@Override
 	@Transactional(readOnly=false)
 	public void save(YwGzbzkWjmbDetail ywGzbzkWjmbDetail) {
+		//先赋值，如果类型是标题的话。则原字段不动。如果类型是段落的话。则需要赋值给原字段上
+		if("2".equals(ywGzbzkWjmbDetail.getJdType())){
+			ywGzbzkWjmbDetail.setFontsize(ywGzbzkWjmbDetail.getFontsize1());
+			ywGzbzkWjmbDetail.setIsBold(ywGzbzkWjmbDetail.getIsBold1());
+			ywGzbzkWjmbDetail.setJdName(ywGzbzkWjmbDetail.getJdName1());
+			ywGzbzkWjmbDetail.setTypeface(ywGzbzkWjmbDetail.getTypeface1());
+			ywGzbzkWjmbDetail.setNumber(ywGzbzkWjmbDetail.getNumber1());
+		}
 
 		if(null != ywGzbzkWjmbDetail.getHierarchy()){
 			int cj = ywGzbzkWjmbDetail.getHierarchy();

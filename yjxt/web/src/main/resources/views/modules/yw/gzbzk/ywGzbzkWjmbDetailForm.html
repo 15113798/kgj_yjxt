@@ -12,7 +12,7 @@
 				<div class="col-xs-6" style="display: none;">
 					<div class="form-group">
 						<label class="control-label col-sm-4" title="">
-							<span class="required">*</span> ${text('文件模板id')}：<i class="fa icon-question hide"></i></label>
+							<span class="">*</span> ${text('文件模板id')}：<i class="fa icon-question hide"></i></label>
 						<div class="col-sm-8">
 							<#form:input path="wjmbId" maxlength="64" class="form-control"/>
 						</div>
@@ -21,7 +21,7 @@
 				<div class="col-xs-6" style="display: none;">
 					<div class="form-group">
 						<label class="control-label col-sm-4" title="">
-							<span class="required">*</span> ${text('父级id，如果是第一级。则为0')}：<i class="fa icon-question hide"></i></label>
+							<span class="">*</span> ${text('父级id，如果是第一级。则为0')}：<i class="fa icon-question hide"></i></label>
 						<div class="col-sm-8">
 							<#form:input path="pid" maxlength="64" class="form-control"/>
 						</div>
@@ -33,7 +33,7 @@
 				<div class="col-xs-6" style="display: none;">
 					<div class="form-group">
 						<label class="control-label col-sm-4" title="">
-							<span class="required">*</span> ${text('层级')}：<i class="fa icon-question hide"></i></label>
+							<span class="">*</span> ${text('层级')}：<i class="fa icon-question hide"></i></label>
 						<div class="col-sm-8">
 							<#form:input path="hierarchy" maxlength="64" class="form-control"/>
 						</div>
@@ -42,7 +42,7 @@
 				<div class="col-xs-6" style="display: none;">
 					<div class="form-group">
 						<label class="control-label col-sm-4" title="">
-							<span class="required">*</span> ${text('具体编号')}：<i class="fa icon-question hide"></i></label>
+							<span class="">*</span> ${text('具体编号')}：<i class="fa icon-question hide"></i></label>
 						<div class="col-sm-8">
 							<#form:input path="numberCode" maxlength="64" class="form-control"/>
 						</div>
@@ -54,83 +54,146 @@
 				<div class="col-xs-6">
 					<div class="form-group">
 						<label class="control-label col-sm-4" title="">
-							<span class="required">*</span> ${text('节点类型')}：<i class="fa icon-question hide"></i></label>
+							<span style="color: #e02222;">*</span> ${text('节点类型')}：<i class="fa icon-question hide"></i></label>
 						<div class="col-sm-8">
-							<#form:select path="jdType" dictType="jd_type" blankOption="true" id="jdType" class="form-control required" onchange="changeType()"/>
-						</div>
-					</div>
-				</div>
-				<div class="col-xs-6">
-					<div class="form-group">
-						<label class="control-label col-sm-4" title="">
-							<span class="required ">*</span> ${text('节点名称')}：<i class="fa icon-question hide"></i></label>
-						<div class="col-sm-8">
-							<#form:input id="jd_name" path="jdName" maxlength="50" class="form-control"/>
-						</div>
-					</div>
-				</div>
-
-
-
-			</div>
-			<div class="row">
-
-
-				<div class="col-xs-6">
-					<div class="form-group">
-						<label class="control-label col-sm-4" title="">
-							<span class="required">*</span> ${text('字体')}：<i class="fa icon-question hide"></i></label>
-						<div class="col-sm-8">
-							<#form:select path="typeface" dictType="ziti" blankOption="true" class="form-control required" />
-						</div>
-					</div>
-				</div>
-
-				<div class="col-xs-6">
-					<div class="form-group">
-						<label class="control-label col-sm-4" title="">
-							<span class="required ">*</span> ${text('排序号')}：<i class="fa icon-question hide"></i></label>
-						<div class="col-sm-8">
-							<#form:input path="number" maxlength="50" class="form-control required"/>
-						</div>
-					</div>
-				</div>
-
-
-			</div>
-
-			<div class="row">
-				<div class="col-xs-6">
-					<div class="form-group">
-						<label class="control-label col-sm-4" title="">
-							<span class="required">*</span> ${text('是否加粗')}：<i class="fa icon-question hide"></i></label>
-						<div class="col-sm-8">
-							<#form:select path="isBold" dictType="is_yes" blankOption="true" class="form-control required" />
-						</div>
-					</div>
-				</div>
-				<div class="col-xs-6">
-					<div class="form-group">
-						<label class="control-label col-sm-4" title="">
-							<span class="required">*</span> ${text('字号')}：<i class="fa icon-question hide"></i></label>
-						<div class="col-sm-8">
-							<#form:select path="fontsize" dictType="zihao" blankOption="true" class="form-control required" />
+							<#form:select path="jdType" dictType="jd_type" blankOption="true" id="jdType" class="form-control " onchange="changeType()"/>
 						</div>
 					</div>
 				</div>
 			</div>
 
-			<div class="row" id="content" >
-				<div class="col-xs-12">
+			<div id="biaoti">
+				<div class="col-xs-6">
 					<div class="form-group">
-						<label class="control-label col-sm-2" title="">
-							<span class="required hide">*</span> ${text('内容')}：<i class="fa icon-question hide"></i></label>
-						<div class="col-sm-10">
-							<#form:textarea path="content" rows="4" maxlength="1024" class="form-control"/>
+						<label class="control-label col-sm-4" title="">
+							<span style="color: #e02222;">*</span> ${text('序号')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-8">
+							<#form:input path="number" maxlength="50" class="form-control "/>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-6">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							<span style="color: #e02222;">*</span> ${text('节点名称')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-8">
+							<#form:input path="jdName" maxlength="50" class="form-control"/>
 						</div>
 					</div>
 				</div>
 
+				<div class="row">
+					<div class="col-xs-6">
+						<div class="form-group">
+							<label class="control-label col-sm-4" title="">
+								<span style="color: #e02222;">*</span> ${text('是否加粗')}：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-8">
+								<#form:select path="isBold" dictType="is_yes" blankOption="true" class="form-control " />
+							</div>
+						</div>
+					</div>
+					<div class="col-xs-6">
+						<div class="form-group">
+							<label class="control-label col-sm-4" title="">
+								<span style="color: #e02222;">*</span> ${text('字体')}：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-8">
+								<#form:select path="typeface" dictType="ziti" blankOption="true" class="form-control " />
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-xs-6">
+						<div class="form-group">
+							<label class="control-label col-sm-4" title="">
+								<span style="color: #e02222;">*</span> ${text('字号')}：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-8">
+								<#form:select path="fontsize" dictType="zihao" blankOption="true" class="form-control " />
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+
+
+
+
+
+
+
+
+
+
+			<div id="duanluo">
+				<div class="col-xs-6" style="display: none;">
+					<div class="form-group">
+						<label class="control-label col-sm-4" title="">
+							<span style="color: #e02222;">*</span> ${text('节点名称')}：<i class="fa icon-question hide"></i></label>
+						<div class="col-sm-8">
+							<#form:input  path="jdName1" maxlength="50" class="form-control"/>
+						</div>
+					</div>
+				</div>
+
+
+
+				<div class="row">
+					<div class="col-xs-6">
+						<div class="form-group">
+							<label class="control-label col-sm-4" title="">
+								<span style="color: #e02222;">*</span> ${text('排序号')}：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-8">
+								<#form:input path="number1" maxlength="50" class="form-control "/>
+							</div>
+						</div>
+					</div>
+					<div class="col-xs-6">
+						<div class="form-group">
+							<label class="control-label col-sm-4" title="">
+								<span style="color: #e02222;">*</span> ${text('字号')}：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-8">
+								<#form:select path="fontsize1" dictType="zihao" blankOption="true" class="form-control" />
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-6">
+						<div class="form-group">
+							<label class="control-label col-sm-4" title="">
+								<span style="color: #e02222;">*</span> ${text('是否加粗')}：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-8">
+								<#form:select path="isBold1" dictType="is_yes" blankOption="true" class="form-control " />
+							</div>
+						</div>
+					</div>
+					<div class="col-xs-6">
+						<div class="form-group">
+							<label class="control-label col-sm-4" title="">
+								<span style="color: #e02222;">*</span> ${text('字体')}：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-8">
+								<#form:select path="typeface1" dictType="ziti" blankOption="true" class="form-control " />
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+
+				<div class="row" id="content" >
+					<div class="col-xs-12">
+						<div class="form-group">
+							<label class="control-label col-sm-2" title="">
+								<span style="color: #e02222;">*</span> ${text('内容')}：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-10">
+								<#form:textarea path="content" rows="4" maxlength="1024" class="form-control"/>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 		<div class="box-footer">
@@ -152,9 +215,6 @@
 		submitHandler: function(form){
 			js.ajaxSubmitForm($(form), function(data){
 				if(data.result == Global.TRUE){
-					/*js.closeCurrentTabPage(function(contentWindow){
-                        contentWindow.page();
-                    });*/
 					js.showMessage(data.message);
 					fomrReset();
 					window.parent.location.reload();
@@ -177,25 +237,63 @@
 		var text=obj.options[index].text;
 
 		var jd_name = $('#jd_name').val();
-		//如果选择标题的话，则不显示内容框，如果选择段落的话，则显示内容框不显示节点名称
+		//如果是标题的话就清空段落里面的值。如果是段落的话就清空标题里面的值
 		if(index == 1){
-			if('段落' == jd_name){
-				$('#jd_name').val('');
-			}
-			$("#jd_name").attr("readOnly",false);
-			$('#content').val('');
-			$('#content').hide();
+			$('#number1').val('');
+			$('#jdName1').val('');
+			$("#isBold1 option:first").prop("selected",'selected');
+			$('#isBold1').trigger('change.select2');
+
+			$("#typeface1 option:first").prop("selected",'selected');
+			$('#typeface1').trigger('change.select2');
+
+			$("#fontsize1 option:first").prop("selected",'selected');
+			$('#fontsize1').trigger('change.select2');
+
+			$(":input","#content")
+					.not(":button",":reset","hidden","submit")
+					.val("")
+					.removeAttr("checked")
+					.removeAttr("selected");
+
+			$('#biaoti').show();
+			$('#duanluo').hide();
 		}else if(index == 2){
-			$('#jd_name').val(text);
-			$("#jd_name").attr("readOnly",true);
-			$('#content').val('');
-			$('#content').show();
+			$('#number').val('');
+			$('#jdName').val('');
+			$("#isBold option:first").prop("selected",'selected');
+			$('#isBold').trigger('change.select2');
+
+			$("#typeface option:first").prop("selected",'selected');
+			$('#typeface').trigger('change.select2');
+
+			$("#fontsize option:first").prop("selected",'selected');
+			$('#fontsize').trigger('change.select2');
+
+
+			$('#jdName1').val('段落');
+			$('#biaoti').hide();
+			$('#duanluo').show();
 		}else{
-			$('#jd_name').val('');
-			$("#jd_name").attr("readOnly",false);
-			$('#jd_name').show();
-			$('#content').val('');
-			$('#content').show();
+			$('#number1').val('');
+			$('#jdName1').val('');
+			$("#isBold1 option:first").prop("selected",'selected');
+			$('#isBold1').trigger('change.select2');
+
+			$("#typeface1 option:first").prop("selected",'selected');
+			$('#typeface1').trigger('change.select2');
+
+			$("#fontsize1 option:first").prop("selected",'selected');
+			$('#fontsize1').trigger('change.select2');
+
+			$(":input","#content")
+					.not(":button",":reset","hidden","submit")
+					.val("")
+					.removeAttr("checked")
+					.removeAttr("selected");
+
+			$('#biaoti').show();
+			$('#duanluo').hide();
 		}
 	}
 
